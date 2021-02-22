@@ -3,9 +3,6 @@ jobs:
   lint:
     docker:
       - image: circleci/node:12.0
-    working_directory: ~/repo
-    environment:
-      NODE_ENV: test
     steps:
       - run: node --version; npm --version
       - checkout
@@ -33,22 +30,6 @@ jobs:
     environment:
       NODE_ENV: test
     steps:
-      - run: node --version; npm --version
-      - checkout
-      - run:
-          name: Log versions
-          command: |
-            echo "bash: $(bash --version)"
-            echo "git: $(git --version)"
-            echo "node: $(node --version)"
-            echo "npm: $(npm --version)"
-      - restore_cache:
-          name: Restore npm cache
-          key: dependency-cache-{{checksum "package.json"}}
-
-      - run:
-          name: Install packages
-          command: npm ci
       - run:
           name: 'Build Project'
           command: 'npm run build'
@@ -74,7 +55,9 @@ workflows:
   build-job:
     jobs:
       - lint
-      - build
+      - build:
+          requires:
+            - lint
       - deploy:
           requires:
             - build
