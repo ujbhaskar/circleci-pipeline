@@ -23,7 +23,7 @@ jobs:
       - checkout
       - run:
           name: Install Ng
-          command: npm install angular/cli
+          command: npm install @angular/cli
       - run:
           name: 'Build Project'
           command: 'npm run build'
