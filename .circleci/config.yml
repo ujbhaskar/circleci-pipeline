@@ -4,22 +4,11 @@ jobs:
     docker:
       - image: circleci/node:12.0
     working_directory: ~/repo
-    environment:
-      NODE_ENV: test
     steps:
-      - run: node --version; npm --version
       - checkout
-      - run:
-          name: Log versions
-          command: |
-            echo "bash: $(bash --version)"
-            echo "git: $(git --version)"
-            echo "node: $(node --version)"
-            echo "npm: $(npm --version)"
       - restore_cache:
           name: Restore npm cache
           key: dependency-cache-{{checksum "package.json"}}
-
       - run:
           name: Install packages
           command: npm ci
@@ -30,25 +19,11 @@ jobs:
     docker:
       - image: circleci/node:12.0
     working_directory: ~/repo
-    environment:
-      NODE_ENV: test
     steps:
-      - run: node --version; npm --version
       - checkout
       - run:
-          name: Log versions
-          command: |
-            echo "bash: $(bash --version)"
-            echo "git: $(git --version)"
-            echo "node: $(node --version)"
-            echo "npm: $(npm --version)"
-      - restore_cache:
-          name: Restore npm cache
-          key: dependency-cache-{{checksum "package.json"}}
-
-      - run:
-          name: Install packages
-          command: npm ci
+          name: Install Ng
+          command: npm install @angular/cli
       - run:
           name: 'Build Project'
           command: 'npm run build'
@@ -56,8 +31,6 @@ jobs:
     docker:
       - image: circleci/node:12.0
     working_directory: ~/repo
-    environment:
-      NODE_ENV: test
     steps:
       - checkout
       - run:
@@ -74,7 +47,9 @@ workflows:
   build-job:
     jobs:
       - lint
-      - build
+      - build:
+          requires:
+            - lint
       - deploy:
           requires:
             - build
