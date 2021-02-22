@@ -25,9 +25,6 @@ jobs:
           name: Restore npm cache
           key: dependency-cache-{{checksum "package.json"}}
       - run:
-          name: Install packages
-          command: npm ci
-      - run:
           name: 'Build Project'
           command: 'npm run build'
   deploy:
