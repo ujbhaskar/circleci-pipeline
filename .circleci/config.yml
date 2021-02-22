@@ -21,9 +21,9 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
-      - restore_cache:
-          name: Restore npm cache
-          key: dependency-cache-{{checksum "package.json"}}
+      - run:
+          name: Install Ng
+          command: npm install angular/cli
       - run:
           name: 'Build Project'
           command: 'npm run build'
