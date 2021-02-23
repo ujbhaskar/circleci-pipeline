@@ -2,27 +2,6 @@ version: 2
 orbs:
   slack: circleci/slack@4.3.0
 jobs:
-  notify:
-    docker:
-      - image: 'cimg/base:stable'
-    steps:
-      - slack/notify:
-          custom: |
-            {
-              "blocks": [
-                {
-                  "type": "section",
-                  "fields": [
-                    {
-                      "type": "plain_text",
-                      "text": "*This is a text notification*",
-                      "emoji": true
-                    }
-                  ]
-                }
-              ]
-            }
-          event: always
   lint:
     docker:
       - image: circleci/node:12.0
